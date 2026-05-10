@@ -12,3 +12,8 @@ My name is Cadar Maxamed. I am studying cybersecurity.
 - Git
 - GitHub
 - VS Code
+
+## My Week 2 Infrastructure
+
+Runner VM: cadar-runner
+Runner IP: 10.129.5.68
