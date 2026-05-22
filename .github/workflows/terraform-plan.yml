@@ -39,4 +39,9 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: |
+          terraform plan \
+          -var="project_id=${{ vars.GCP_PROJECT_ID }}" \
+          -var="region=us-central1" \
+          -var="ssh_source_range=168.156.66.182/32"
+          
