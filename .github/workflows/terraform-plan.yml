@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-
-permissions:
-  contents: read
-  id-token: write
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/terraform-plan.yml'
 
 jobs:
   terraform-plan:
@@ -18,16 +16,19 @@ jobs:
       run:
         working-directory: terraform/week7
 
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Authenticate to Google Cloud
-        id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
-          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -39,9 +40,5 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: |
-          terraform plan \
-          -var="project_id=${{ vars.GCP_PROJECT_ID }}" \
-          -var="region=us-central1" \
-          -var="ssh_source_range=168.156.66.182/32"
-          
+        run: terraform plan
+        
