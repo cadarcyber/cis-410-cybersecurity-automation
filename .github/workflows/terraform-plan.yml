@@ -40,4 +40,4 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -lock=false -backend=false
+        run: terraform plan -lock=false
